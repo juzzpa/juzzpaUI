@@ -6,22 +6,20 @@
         <title>Verification</title>
    		<link href="assets/css/bootstrap.css" rel="stylesheet">
    		<link href="assets/css/juzzpa.css" rel="stylesheet">
+        <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+        <script src="assets/juzzjs/regSuccess.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
 
 <body class="backgroundLogin">
-	<header class="container-fluid">
-    	<div class="font-champagne pull-left padding15 font-large">Juzzpa</div>
-    </header>
-    <legend></legend>
+	 <div style="position:fixed;top:10px;left:10px;">
+    	<img width="140" height="50" src="assets/img/icon.png"/>
+    </div>
     
-    <section class="container margintop80">
+    <section ng-app="regSuccess" ng-controller="regCtrl" class="container margintop80">
     	<p class="font-champagne font-large">Thank you for registering with Juzzpa!</p>
-		<p class="font-champagne">Soon you will be getting an mail for verifying your email id. You will be redirected to Juzzpa website login page in 10 seconds.	</p>
+		<p class="font-champagne">Soon you will be getting an mail for verifying your email id. You will be redirected to Juzzpa website login page in {{timer}} seconds.	</p>
     </section>
-	
-	<script>
-		setTimeout(function(){window.location.href='loginPage.html'},10000);
-	</script>
     	
 </body>
 </html>

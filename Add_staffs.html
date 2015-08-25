@@ -4,68 +4,131 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <meta name="description" content="">
         <title>Add staffs</title>
-   		<link href="assets/css/bootstrap.css" rel="stylesheet">
+   		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
    		<link href="assets/css/juzzpa.css" rel="stylesheet">
         <link href="assets/css/style.css" rel="stylesheet">
+		<script src="assets/js/jquery.js"></script>
+		<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+		<script src="assets/js/bootstrap.min.js"></script>
+		<script src="assets/juzzjs/messages.js"></script>
+		<script src="assets/juzzjs/manageStaff.js"></script>		
 </head>
 
-<body class="backgroundLogin">
+<body class="backgroundLogin" ng-app="staff" ng-controller="staffctrl">
 	<header class="container-fluid">
-		<div class="font-champagne pull-left font-large padding15"><i id="plus" class="glyphicon glyphicon-plus" style="color:white"></i> &nbsp;&nbsp;Juzzpa</div>
-        <div id="logout" class="font-champagne pull-right padding25">LogOut</div>
-        <a data-toggle="modal" id="home" href="Add services#homeModal" class="font-champagne pull-right padding25"><span style="color:white">Home</span></a>
+		<div style="position:fixed;top:10px;left:10px;z-index:100" class="font-sourcesanspro pull-left font-large padding15">
+			<img width="140" height="50" src="assets/img/icon.png"/>
+			<b id="plus" style="border:1px solid black;border-radius:30px;padding-left:11px;padding-right:11px;">+</b>
+		</div>
+		
+		<div style="position:fixed;top:10px;right:10px;padding:25px;z-index:100">
+			<a href="loginPage.html"><div id="logout" class="font-sourcesanspro pull-right" style="border:1px solid black;padding:8px;border-radius:20px;">LogOut</div></a>
+			<a data-toggle="modal" id="home" href="Add stores#homeModal" class="font-sourcesanspro pull-right" style="border:1px solid black;padding:8px;border-radius:20px;margin-right:20px;"><span>Home</span></a>
+		</div>
     </header>
-    <legend></legend>
     
-    <section id="add" style="position:absolute;left:0;width:250px;margin:15px;overflow:auto;height:inherit">
-    	<form>
-        	<div>
-	            <p class="font-champagne centered font-medium">Add staff</p>
-            	<input id="staffName" class="juzz-form" type="text" placeholder="Name*"/>
-				<select class="juzz-form">
-                	<option value="M">Male</option>
-                    <option value="F">Female</option>
-                </select>
-                <input id="mobileNumber" class="juzz-form" type="text" placeholder="Mobile Number*"/>
-                <label class="font-champagne">Staff image</label>
-                <input id="picture" class="juzz-form" type="file" placeholder="Picture"/>
-                <input id="localAddress" class="juzz-form" type="text" placeholder="Local Address"/>
-                <input id="permanentAddress" class="juzz-form" type="text" placeholder="Permanent Address"/>
-                <input id="emailId" class="juzz-form" type="text" placeholder="Email*"/>
-                <select id="idProof" class="juzz-form">
-                	<option value="1">Voter Id</option>
-                    <option value="2">Driving License</option>
-                    <option value="3">Adhaar card</option>
-                </select>
-                <select id="addedServices" class="juzz-form"></select>
-                <label class="font-champagne">Staff photo Id proof </label>
-                <input id="staffPhotoId" class="juzz-form" type="file" placeholder="staff Photo Id*"/>
-                <input id="facebookAcc" class="juzz-form" type="text" placeholder="Facebook Account"/>
-                <button id="addStaff" type="button" class="juzz-button juzz-default"><span id="staffspan" class="font-champagne">Add</span></button>
-                <button type="reset" class="juzz-button juzz-theme1"><span class="font-champagne">Reset</span></button>
-            </div>
-            
+    <section id="add" style="float:left;position:fixed;width:390px;overflow:auto;padding:20px;height:85%;" class="margintop100">
+    	<form ng-submit="addstaff()">
+			<p class="font-sourcesanspro centered font-medium">Add Staff</p>
+			<p class="font-sourcesanspro centered">{{addError}}</p>
+        	<div style="padding:0 20px;">
+				<div>
+					<div style="width:40%;float:left;">
+						<img ng-model="simg" src="assets/img/user.png" width="90" height="90"/>
+					</div>
+					<div style="width:60%;float:left;margin-top:-10px;">
+						<input ng-model="sname" class="juzz-form" type="text" placeholder="Name*"/>
+						<select class="juzz-form" ng-model="sex" ng-options="c.name as c.name for c in gender"></select>
+						<input id="simg" ng-model="simg" onchange="upload()" style="display:none" class="juzz-form" type="file"  placeholder="Staff img"/>
+					</div>
+				</div>
+				<input ng-model="mobileNumber" class="juzz-form" type="tel" placeholder="Mobile Number*"/>
+                <textarea rows="4" cols="20" ng-model="address" class="juzz-form" type="text-area" placeholder="Address"></textarea>
+				<div style="width:49%;float:left;margin-top:-15px;"><input ng-model="emailId" class="juzz-form" type="text" placeholder="EmailId"/></div>
+                <div style="width:50%;float:right;margin-top:-15px;"><input ng-model="fburl" class="juzz-form" type="text" placeholder="Facebook URL"/></div>
+				<div>
+					<p style="width:35%;float:left;padding:5px;">ID PROOF</p>
+					<div style="width:65%;float:right;margin-top:-15px;"><input ng-model="idproof" class="juzz-form" type="file" placeholder="idproof"/></div>
+				</div>
+				<div>
+					<p style="width:35%;float:left;padding:5px;">PHOTO PROOF</p>
+					<div style="width:65%;float:right;margin-top:-15px;"><input ng-model="photoid" class="juzz-form" type="file" placeholder="photoproof"/></div>
+				</div>
+				<button type="submit" class="juzz-button juzz-default" style="width:50%;float:left"><span class="font-sourcesanspro">Add</span></button>
+				<button type="reset" class="juzz-button juzz-theme1" style="width:50%;float:right"><span class="font-sourcesanspro">Reset</span></button>
+            </div>            
         </form>
     </section>
     
-    <section id="main" class="container-fluid margintop40" style="margin-left:300px;">
-    	<div id="row" class="row" align="center"></div>
+    <section id="main" class="container-fluid margintop100" style="margin-left:410px;">
+    	<div id="row" class="row" align="center">				
+			<div class='col-sm-3' style='border:1px solid #c8c8c8;height:360px;width:350px;margin:5px;padding:0px;' ng-repeat="x in viewStaff">
+				
+				<div><img id='storeImg' class='img-circle margin10' width='80' height='80' src="{{x.img}}"/></div>
+				
+				<div style="padding:0 10px;">
+					<p ng-show="!x.namehow" class='font-sourcesanspro'>{{x.name}}<i ng-click="deleteService($parent.$index,$index)" class="glyphicon glyphicon-edit" style="padding-left:20px;"></i></p>
+					<div ng-show="x.nameshow">
+						<input ng-model="x.name" class="juzz-form" style="width:85%;float:left" type="text"/><i ng-click="deleteService($parent.$index,$index)" class="glyphicon glyphicon-ok" style="width:10%;float:left;padding:20px 5px;"></i>
+					</div>
+				</div>
+				
+				<div style="padding:0 10px;">
+					<p ng-show="!x.mobileshow" class='font-sourcesanspro'><i class="glyphicon glyphicon-earphone" style="padding-right:10px;"></i>{{x.mobile}}<i ng-click="deleteService($parent.$index,$index)" class="glyphicon glyphicon-edit" style="padding-left:20px;"></i></p>
+					<div ng-show="x.mobileshow">
+						<input ng-model="x.mobile" class="juzz-form" style="width:85%;float:left" type="text"/><i ng-click="deleteService($parent.$index,$index)" class="glyphicon glyphicon-ok" style="width:10%;float:left;padding:20px 5px;"></i>
+					</div>
+				</div>
+				
+				<div style="padding:0 10px;">
+					<p ng-show="!x.addressshow" class='font-sourcesanspro'>{{x.address}}<i ng-click="deleteService($parent.$index,$index)" class="glyphicon glyphicon-edit" style="padding-left:20px;"></i></p>
+					<div ng-show="x.addressshow">
+						<input ng-model="x.address" class="juzz-form" style="width:85%;float:left" type="text"/><i ng-click="deleteService($parent.$index,$index)" class="glyphicon glyphicon-ok" style="width:10%;float:left;padding:20px 5px;"></i>
+					</div>
+				</div>
+				
+				<div style="padding:0 10px;">
+					<p ng-show="!x.emailshow" class='font-sourcesanspro'>{{x.emailId}}<i ng-click="deleteService($parent.$index,$index)" class="glyphicon glyphicon-edit" style="padding-left:20px;"></i></p>
+					<div ng-show="x.emailshow">
+						<input ng-model="x.emailId" class="juzz-form" style="width:85%;float:left" type="text"/><i ng-click="deleteService($parent.$index,$index)" class="glyphicon glyphicon-ok" style="width:10%;float:left;padding:20px 5px;"></i>
+					</div>
+				</div>
+				
+				<div class="row" style="position:absolute;bottom:50px;left:0;padding:15px;">
+					<div class="col-sm-3">
+						<img height="40" width="40" src="assets/img/fb.png"/>
+						<i class="glyphicon glyphicon-edit" style="padding:4px;"></i>
+					</div>
+					<div class="col-sm-3">
+						<img height="40" width="40" src="assets/img/mail.png"/>
+						<i class="glyphicon glyphicon-edit" style="padding:4px;"></i>
+					</div>
+					<div class="col-sm-3">
+						<img height="40" width="40" src="assets/img/pdf.png"/><br>
+						<i class="glyphicon glyphicon-edit" style="float:left;padding:4px;"></i>
+						<i class="glyphicon glyphicon-save" style="float:right;padding:4px;"></i>
+					</div>
+					<div class="col-sm-3">
+						<img height="40" width="40" src="assets/img/pid.png"/><br>
+						<i class="glyphicon glyphicon-edit" style="float:left;padding:4px;"></i>
+						<i class="glyphicon glyphicon-save" style="float:right;padding:4px;"></i>
+					</div>
+				</div>
+
+				<button ng-click="deleteStore($index)" type='button' style="position:absolute;bottom:0;left:0" class='juzz-button juzz-theme1 font-sourcesanspro'>Delete</button>
+			</div>
+		</div>
     </section>
     
     <section aria-hidden="true" aria-smallledby="viewHome" role="dialog" id="homeModal" class="container modal fade">
-    	<div class="modal-dialog" >
-    	<div class="padding15 juzz-theme1 font-champagne centered">My profile</div>
-        <div class="padding15 juzz-theme1 font-champagne centered">Manage services</div>
-        <div class="padding15 juzz-default font-champagne centered">Manage staffs</div>
-        <div class="padding15 juzz-theme1 font-champagne centered">Manage stores</div>
-        <div class="padding15 juzz-theme1 font-champagne centered">Dashboard</div>
+    	<div class="modal-dialog" style="width:30%;" >
+    	<a href="My_profile.html"><div class="padding15 optionbg font-sourcesanspro centered">My profile</div></a>
+        <a href="Add_services.html"><div class="padding15 optionbg font-sourcesanspro centered">Manage services</div></a>
+        <div class="padding15 juzz-default font-sourcesanspro centered">Manage staffs</div>
+        <a href="Add_stores.html"><div class="padding15 optionbg font-sourcesanspro centered">Manage stores</div></a>
+        <a href="Dashboard.html"><div class="padding15 optionbg font-sourcesanspro centered">Dashboard</div></a>
         </div>
     </section>
-    
-	<script src="assets/js/jquery.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/juzzjs/messages.js"></script>
-    <script src="assets/juzzjs/manageStaff.js"></script>
-
+	
 </body>
 </html>

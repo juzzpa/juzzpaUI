@@ -13,15 +13,15 @@
         <script src="assets/juzzjs/messages.js"></script>
 </head>
 
-<body class="backgroundLogin">
-	<header style="position:fixed;width:100%;z-index:20;background-color:#636">
+<body class="backgroundLogin" style="overflow-x:hidden">
+	<header style="position:fixed;width:100%;z-index:10000;background-color:#636">
 		<div class="font-champagne pull-left font-large padding15">Juzzpa</div>
         <div id="logout" class="font-champagne pull-right padding25">LogOut</div>
     </header>
-	<input type="date" data-date-inline-picker="false" style="position:fixed;bottom:20px;right:20px;"/>
     
-    <section id="main" style="padding-top:70px;">
-        	<div id="timeline" style="width:1580px;position:absolute;z-index:40;">
+    <section id="main" style="padding-top:150px;overflow:auto">
+        	<div id="timeline" style="position:absolute;z-index:40;">
+			<div style="width:1580px;margin-top:20px;">
 	            <div style="position:absolute;left:10px;width:60px"></div>	
             	<span style="width:60px;height:40px;margin-left:80px" class="pull-left font-champagne">9</span>
                 <span style="width:60px;height:40px;" class="pull-left font-champagne">9.30</span>
@@ -49,35 +49,52 @@
                 <span style="width:60px;height:40px;" class="pull-left font-champagne">8.30</span>
                 <span style="width:60px;height:40px;" class="pull-left font-champagne">9</span>
             </div>
-            <div style="padding-top:50px;"></div>
+	        <div style="padding-top:20px;"></div>
             
             <section ng-app="appointment" ng-controller="appCtrl">
-                <div ng-repeat="x in staff">
-                   	<img width="60" height="60" src="{{x.photo}}" style="position:absolute;left:10px;z-index:10;"/>
+				<div style="position:fixed;top:70px;z-index:8000;width:100%;background-color:black;padding-top:20px;">
+					<div ng-click="scrollLeft()" style="float:left"><span style="color:white" class="font-champagne">Go Left</span><img  id="flipimg" width="30" height="30" src="assets/img/arrow.png"/></div>
+					<div ng-click="scrollRight()" style="float:right"><img width="30" height="30" src="assets/img/arrow.png"/><span style="color:white" class="font-champagne">Go Right</span></div>
+					<div style="width:300px;margin:auto;">
+						<input type="date" data-date-inline-picker="false" style="width:200px !important;display:inline;margin-top:0px;" class="juzz-form" ng-model="apptDate">
+						<button ng-click="apptQue()" style="display:inline;height:33px;width:40px;background-color:wheat;border:none;color:black" class="font-champagne">Go</button>
+					</div>
+                </div>
+				<div ng-repeat="x in staff">
+                   	<img width="60" height="60" src="{{x.photo}}" style="position:absolute;left:{{x.imglIndex}}px;z-index:10;border-radius:50px;"/>
+								
                     <div class="lightGrey appwhite" ng-click="showaddform(x.id)">
-                        <a href="#" ng-repeat="y in x.appointments track by $index" ng-click="showeditform(y.aid);$event.stopPropagation();" class="green appgreen" style="width:{{y.width}}px;left:{{y.leftIndex}}px;"></a>
+                        <a href="#" ng-repeat="y in x.appointments track by $index" ng-mouseover="viewDetails(y.aid);$event.stopPropagation();" ng-mouseleave="hideDetails(y.aid);$event.stopPropagation();" ng-click="showeditform(y.aid);$event.stopPropagation();" class="green appgreen" style="width:{{y.width}}px;left:{{y.leftIndex}}px;text-align:center;padding:5px;">
+								<p style="color:white">{{y.starttimehr+":"+y.starttimemin}}</p>
+								<p style="color:white">{{y.endtimehr+":"+y.endtimemin}}</p>
+						</a>
+                        <div ng-repeat="y in x.appointments track by $index" style="position:absolute;text-align:center;background-color:rosyBrown;border-radius:50px;left:{{y.leftIndex+20}}px;top:-55px;width:180px;z-index:1000" ng-show="sa{{y.aid}}">
+                                <p>{{y.custname}},{{y.custMob}}</p>
+                                <p>{{y.custEmail}}</p>
+						</div>
                     </div>
+			
                     
                     <!-- for adding the appointment -->
-                    <section ng-show="{{x.id}}" ng-controller="addForm" class="container addform" style="background-color:grey;padding-bottom:30px;width:100%;">
-                        <div class="col-sm-1"></div>
+                    <section ng-show="{{x.id}}" ng-controller="addForm" class="container addform" style="padding-bottom:30px;width:100%;z-index:100;">
+						<div class="col-sm-1" style="margin-left:{{x.applIndex}}px"></div>
                         <div class="col-sm-4">
                             <form>
                                 <p class="font-champagne">Add appointment</p>
                                 <input id="name" class="juzz-form" type="text" ng-model="name" placeholder="Name*"/>
                                 <input id="mobileNumber" class="juzz-form" ng-model="mobileNumber" type="text" placeholder="Mobile Number*"/>
                                 <input id="email" class="juzz-form" type="text" ng-model="email" placeholder="Email"/>
-                                <div>
+                                <div align="center">
                                     <span class="pull-left font-champagne">Start time</span><br>
-                                    <select id="stimehr" class="juzz-form" ng-model="shour" ng-options="h as h for h in hr" style="width:45%;display:inline">											
+                                    <select id="stimehr" class="juzz-form" ng-model="shour" ng-options="h as h for h in hr" style="width:46%;display:inline">											
                                     </select>
                                     <span class="font-champagne" style="padding-left:14px;padding-right:14px">:</span>
                                     <select id="stimemin" class="juzz-form" ng-model="sMin" ng-options="mi as mi for mi in minutes" style="width:45%;display:inline">					
                                     </select>
                                 </div>
-                                <div>
+                                <div align="center">
                                     <span class="pull-left font-champagne">End time</span><br>
-                                    <select id="stimehr" class="juzz-form" ng-model="ehour" ng-options="h as h for h in hr" style="width:45%;display:inline">											
+                                    <select id="stimehr" class="juzz-form" ng-model="ehour" ng-options="h as h for h in hr" style="width:46%;display:inline">											
                                     </select>
                                     <span class="font-champagne" style="padding-left:14px;padding-right:14px">:</span>
                                     <select id="stimemin" class="juzz-form" ng-model="eMin" ng-options="mi as mi for mi in minutes" style="width:45%;display:inline">					
@@ -86,10 +103,10 @@
                                 <button type="button" ng-click="addAppointment()" class="juzz-button">Submit</button>
                             </form>
                         </div>
-                        <div class="col-sm-2"></div>
+                        <div class="col-sm-1"></div>
                         <div class="col-sm-3" style="padding-top:30px;">
-                             <div id="appTemplate" style="height:280px;padding:10px;overflow:auto;background-color:lightgreen">
-                                <img id="sImg" class="img-circle" src="{{x.photo}}" width="70" height="70" alt="staff image"/>
+                             <div id="appTemplate" style="height:350px;padding:35px;overflow:auto;border:1px solid white">
+                                <div align="center" style="margin-bottom:20px;"><img id="sImg" class="img-circle" src="{{x.photo}}" width="70" height="70" alt="staff image"/></div>
                                 <p>Name&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;			 :{{name}}</p>
                                 <p>Mobile Number :{{mobileNumber}}</p>
                                 <p>Email&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		 :{{email}} </p>
@@ -102,11 +119,11 @@
                     
                     
                     <!-- for editing the appointment -->
-                    <section class="container editform" ng-controller="editForm" ng-repeat="y in x.appointments track by $index" ng-show="{{y.aid}}" style="background-color:grey;padding-bottom:30px;width:100%;">
-						<div class="col-sm-1"></div>
+                    <section class="container editform" ng-controller="editForm" ng-repeat="y in x.appointments track by $index" ng-show="{{y.aid}}" style="padding-bottom:30px;width:100%;">
+						<div class="col-sm-1" style="margin-left:{{x.applIndex}}px"></div>
 					    <div class="col-sm-3" style="padding-top:30px;">
-							<div style="height:280px;background-color:lightgreen;padding:10px">
-                                <img id="sImg" class="img-circle" width="70" height="70"  src="{{x.photo}}" alt="staff image"/>&nbsp;&nbsp; {{x.name}}
+							<div style="height:350px;padding:35px;border:1px solid white">
+                                <div style="margin-bottom:20px;" align="center"><img id="sImg" class="img-circle" width="70" height="70"  src="{{x.photo}}" alt="staff image"/>&nbsp;&nbsp; <span style="color:white" class="font-champagne">{{x.name}}</span></div>
                                 <p>Name&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;			 : {{y.custname}}</p>
                                 <p>Mobile Number : {{y.custMob}}</p>
                                 <p>Email&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		 : {{y.custEmail}}</p>
@@ -115,25 +132,25 @@
                                 <p>End time&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	 : {{y.endtimehr+":"+y.endtimemin}}</p>	
 							</div>
                         </div>
-                        <div class="col-sm-2"></div>
+                        <div class="col-sm-1"></div>
 						<div class="col-sm-4">
                             <form>
                                 <p class="font-champagne">Modify appointment</p>
                                 <input class="juzz-form" type="text" placeholder="Name*" ng-model="y.custname"/>
                                 <input class="juzz-form" type="text" placeholder="Mobile Number*" ng-model="y.custMob"/>
                                 <input class="juzz-form" type="text" placeholder="Email" ng-model="y.custEmail"/>
-                                <div>
+                                <div align="center">
                                     <span class="pull-left font-champagne">Start time</span><br>
-                                    <select id="stimehr" class="juzz-form" ng-model="y.starttimehr" ng-options="h as h for h in hr"  style="width:45%;display:inline">											
+                                    <select id="stimehr" class="juzz-form" ng-model="y.starttimehr" ng-options="h as h for h in hr"  style="width:46%;display:inline">											
                                         <option ng-repeat="h in hr" val="{{h}}">{{h}}</option>							
                                     </select>
                                     <span class="font-champagne" style="padding-left:14px;padding-right:14px">:</span>
                                     <select id="stimemin" class="juzz-form" ng-model="y.starttimemin" ng-options="mi as mi for mi in minutes" style="width:45%;display:inline">					
                                     </select>
                                 </div>
-                                <div>
+                                <div align="center">
                                     <span class="pull-left font-champagne">End time</span><br>
-                                    <select id="stimehr" class="juzz-form" ng-model="y.endtimehr" ng-options="h as h for h in hr" style="width:45%;display:inline">																
+                                    <select id="stimehr" class="juzz-form" ng-model="y.endtimehr" ng-options="h as h for h in hr" style="width:46%;display:inline">																
                                     </select>
                                     <span class="font-champagne" style="padding-left:14px;padding-right:14px">:</span>
                                     <select id="stimemin" class="juzz-form" ng-model="y.endtimemin" ng-options="mi as mi for mi in minutes" style="width:45%;display:inline">
@@ -144,6 +161,7 @@
                             </form>
 	                    </div>
 					</section>
+                    
                     
                 </div>
             </section>
