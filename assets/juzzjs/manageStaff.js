@@ -56,6 +56,7 @@ app.controller("staffctrl",function($scope){
 		newstaff.gender=$scope.sex;
 		newstaff.mobile=$scope.mobileNumber;
 		newstaff.address=$scope.address;
+		newstaff.fburl=$scope.fburl;
 		newstaff.img="assets/img/user.png";
 		
 		alert(JSON.stringify(newstaff));
@@ -66,6 +67,10 @@ app.controller("staffctrl",function($scope){
 		alert(JSON.stringify(newstaff));
 		$scope.x.push(addedStaffObj);	
 		
+	}
+	
+	$scope.deleteStore=function(index){
+		addedStaffObj.staff.splice(index,1);
 	}
 });
 

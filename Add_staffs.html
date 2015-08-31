@@ -67,54 +67,59 @@
 				<div><img id='storeImg' class='img-circle margin10' width='80' height='80' src="{{x.img}}"/></div>
 				
 				<div style="padding:0 10px;">
-					<p ng-show="!x.namehow" class='font-sourcesanspro'>{{x.name}}<i ng-click="deleteService($parent.$index,$index)" class="glyphicon glyphicon-edit" style="padding-left:20px;"></i></p>
+					<p ng-show="!x.nameshow" class='font-sourcesanspro'>{{x.name}}<i ng-click="x.nameshow=true" class="glyphicon glyphicon-edit" style="padding-left:20px;"></i></p>
 					<div ng-show="x.nameshow">
-						<input ng-model="x.name" class="juzz-form" style="width:85%;float:left" type="text"/><i ng-click="deleteService($parent.$index,$index)" class="glyphicon glyphicon-ok" style="width:10%;float:left;padding:20px 5px;"></i>
+						<input ng-model="x.name" class="juzz-form" style="width:65%;display:inline" type="text"/><i ng-click="x.nameshow=false" class="glyphicon glyphicon-ok" style="width:10%;display:inline;margin-left:5px;"></i>
 					</div>
 				</div>
 				
 				<div style="padding:0 10px;">
-					<p ng-show="!x.mobileshow" class='font-sourcesanspro'><i class="glyphicon glyphicon-earphone" style="padding-right:10px;"></i>{{x.mobile}}<i ng-click="deleteService($parent.$index,$index)" class="glyphicon glyphicon-edit" style="padding-left:20px;"></i></p>
+					<p ng-show="!x.mobileshow" class='font-sourcesanspro'>{{x.mobile}}<i ng-click="x.mobileshow=true" class="glyphicon glyphicon-edit" style="padding-left:20px;"></i></p>
 					<div ng-show="x.mobileshow">
-						<input ng-model="x.mobile" class="juzz-form" style="width:85%;float:left" type="text"/><i ng-click="deleteService($parent.$index,$index)" class="glyphicon glyphicon-ok" style="width:10%;float:left;padding:20px 5px;"></i>
+						<input ng-model="x.mobile" class="juzz-form" style="width:65%;display:inline" type="text"/><i ng-click="x.mobileshow=false" class="glyphicon glyphicon-ok" style="width:10%;display:inline;margin-left:5px;"></i>
 					</div>
 				</div>
 				
 				<div style="padding:0 10px;">
-					<p ng-show="!x.addressshow" class='font-sourcesanspro'>{{x.address}}<i ng-click="deleteService($parent.$index,$index)" class="glyphicon glyphicon-edit" style="padding-left:20px;"></i></p>
+					<p ng-show="!x.addressshow" class='font-sourcesanspro'>{{x.address}}<i ng-click="x.addressshow=true" class="glyphicon glyphicon-edit" style="padding-left:20px;"></i></p>
 					<div ng-show="x.addressshow">
-						<input ng-model="x.address" class="juzz-form" style="width:85%;float:left" type="text"/><i ng-click="deleteService($parent.$index,$index)" class="glyphicon glyphicon-ok" style="width:10%;float:left;padding:20px 5px;"></i>
+						<input ng-model="x.address" class="juzz-form" style="width:65%;display:inline" type="text"/><i ng-click="x.addressshow=false" class="glyphicon glyphicon-ok" style="width:10%;display:inline;margin-left:5px;"></i>
 					</div>
 				</div>
 				
-				<div style="padding:0 10px;">
-					<p ng-show="!x.emailshow" class='font-sourcesanspro'>{{x.emailId}}<i ng-click="deleteService($parent.$index,$index)" class="glyphicon glyphicon-edit" style="padding-left:20px;"></i></p>
-					<div ng-show="x.emailshow">
-						<input ng-model="x.emailId" class="juzz-form" style="width:85%;float:left" type="text"/><i ng-click="deleteService($parent.$index,$index)" class="glyphicon glyphicon-ok" style="width:10%;float:left;padding:20px 5px;"></i>
-					</div>
-				</div>
-				
-				<div class="row" style="position:absolute;bottom:50px;left:0;padding:15px;">
+				<div class="row" style="position:absolute;bottom:30px;left:0;padding:15px;">
 					<div class="col-sm-3">
-						<img height="40" width="40" src="assets/img/fb.png"/>
-						<i class="glyphicon glyphicon-edit" style="padding:4px;"></i>
+						<a href="{{x.fburl}}"><img height="40" width="40" src="assets/img/fb.png"/></a>
+						<i ng-click="x.fbshow=true;x.emailshow=false;x.idshow=false;x.photoidshow=false" class="glyphicon glyphicon-edit" style="padding:4px;"></i>
 					</div>
 					<div class="col-sm-3">
-						<img height="40" width="40" src="assets/img/mail.png"/>
-						<i class="glyphicon glyphicon-edit" style="padding:4px;"></i>
+						<a href="{{x.email}}"><img height="40" width="40" src="assets/img/mail.png"/></a>
+						<i ng-click="x.fbshow=false;x.emailshow=true;x.idshow=false;x.photoidshow=false" class="glyphicon glyphicon-edit" style="padding:4px;"></i>
 					</div>
 					<div class="col-sm-3">
 						<img height="40" width="40" src="assets/img/pdf.png"/><br>
-						<i class="glyphicon glyphicon-edit" style="float:left;padding:4px;"></i>
-						<i class="glyphicon glyphicon-save" style="float:right;padding:4px;"></i>
+						<i ng-click="x.fbshow=false;x.emailshow=false;x.idshow=true;x.photoidshow=false" class="glyphicon glyphicon-edit" style="float:left;padding:4px;"></i>
+						<a href="{{x.idproof}}"><i class="glyphicon glyphicon-save" style="float:right;padding:4px;"></i></a>
 					</div>
 					<div class="col-sm-3">
 						<img height="40" width="40" src="assets/img/pid.png"/><br>
-						<i class="glyphicon glyphicon-edit" style="float:left;padding:4px;"></i>
-						<i class="glyphicon glyphicon-save" style="float:right;padding:4px;"></i>
+						<i ng-click="x.fbshow=false;x.emailshow=false;x.idshow=false;x.photoidshow=true" class="glyphicon glyphicon-edit" style="float:left;padding:4px;"></i>
+						<a href="{{x.photoId}}"><i class="glyphicon glyphicon-save" style="float:right;padding:4px;"></i></a>
+					</div>
+					<div ng-show="x.fbshow">
+						<input ng-model="x.fburl" class="juzz-form" style="width:65%;display:inline" type="text"/><i ng-click="x.fbshow=false;" class="glyphicon glyphicon-ok" style="width:10%;display:inline;margin-left:5px;"></i>
+					</div>
+					<div ng-show="x.emailshow">
+						<input ng-model="x.emailId" class="juzz-form" style="width:65%;display:inline" type="text"/><i ng-click="x.emailshow=false" class="glyphicon glyphicon-ok" style="width:10%;display:inline;margin-left:5px;"></i>
+					</div>
+					<div ng-show="x.idshow">
+						<input ng-model="x.idproof" class="juzz-form" style="width:65%;display:inline" type="file"/><i ng-click="x.idshow=false" class="glyphicon glyphicon-ok" style="width:10%;display:inline;margin-left:5px;"></i>
+					</div>
+					<div ng-show="x.photoidshow">
+						<input ng-model="x.photoId" class="juzz-form" style="width:65%;display:inline" type="file"/><i ng-click="x.photoidshow=false" class="glyphicon glyphicon-ok" style="width:10%;display:inline;margin-left:5px;"></i>
 					</div>
 				</div>
-
+				
 				<button ng-click="deleteStore($index)" type='button' style="position:absolute;bottom:0;left:0" class='juzz-button juzz-theme1 font-sourcesanspro'>Delete</button>
 			</div>
 		</div>

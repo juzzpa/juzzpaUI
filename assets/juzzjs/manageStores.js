@@ -72,6 +72,8 @@ app.controller("storectrl",function($scope){
 		
 		if(nocheck==true){$scope.storeError="Please select atleast one service for your store";return;}
 		
+		alert(oldstore);
+		
 		$scope.storeError="";
 		
 		if(oldstore){
@@ -85,11 +87,9 @@ app.controller("storectrl",function($scope){
 					newService.id=serviceObj.services[m].id;
 					
 					for(l=0;l<addedStoresObj.store[sindex].storeService.length;l++){
-						alert(id+""+addedStoresObj.store[sindex].storeService[l].id);
-						alert(addedStoresObj.store[sindex].storeService.length);
-						alert(oldservice);
 						if(addedStoresObj.store[sindex].storeService[l].id==id){
 							oldservice=true;
+							l=0;
 							break;							
 						}
 					}
@@ -99,23 +99,30 @@ app.controller("storectrl",function($scope){
 					}					
 				}
 			}
+			m=0
 			
 		}else{
 			for(m=0;m<serviceObj.services.length;m++){			
 				if(serviceObj.services[m].checked==true){
 					var newService={};
 					newService.name=serviceObj.services[m].name;
+					newService.id=serviceObj.services[m].id;
 					storeService.push(newService);
 				}
-			}		
+			}
+			m=0;			
 			
-			sindex=addedStoresObj.store.length;
+			for(n=0;n<storesObj.stores.length;n++){
+				if(storesObj.stores[n].id==sid){sindex=n;break;}
+			}
+			n=0;
+			
 			newStore.storeService=storeService;		
-			newStore.storename=storesObj.stores[sindex-1].name;
+			newStore.storename=storesObj.stores[sindex].name;
 			newStore.storeDesc="dont enjoy please";
 			newStore.storeimg="assets/img/user.jpg";
-				
-			alert(JSON.stringify(newStore));	
+			newStore.storeId=sid;
+	
 			addedStoresObj.store.push(newStore);
 			$scope.x.push(newStore);
 		}
@@ -142,9 +149,5 @@ app.controller("storectrl",function($scope){
 		addedStoresObj.store[sindex].serviceError="";
 		addedStoresObj.store[sindex].hideError=false;
 		return;
-	}
-	
-	
-	
-	
+	}	
 });
